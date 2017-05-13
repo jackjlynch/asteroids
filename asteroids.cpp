@@ -11,62 +11,94 @@ using namespace irr;
 class Object {
   protected:
     video::SColor color;
-    core::vector2d<f32> velocity;
+    core::vector2d<f64> velocity;
+    f64 angle;
+    void draw_and_wrap(core::vector2d<f64>, core::vector2d<f64>);
+    video::IVideoDriver* driver;
   public:
-    core::vector2d<f32> position;
-    Object(core::vector2d<f32>, video::SColor color);
-    virtual void draw(video::IVideoDriver*) { };
+    core::vector2d<f64> position;
+    Object(core::vector2d<f64>, video::SColor, video::IVideoDriver*);
+    virtual void draw() { };
     virtual void update(u32);
-    void setVelocity(core::vector2d<f32>);
-    core::vector2d<f32> getVelocity();
+    void set_velocity(core::vector2d<f64>);
+    core::vector2d<f64> get_velocity();
+    virtual void rotate(f64);
 };
 
-Object::Object(core::vector2d<f32> position, video::SColor color) {
-  this->position = core::vector2d<f32>(position);
-  this->velocity = core::vector2d<f32>(0, 0);
+Object::Object(core::vector2d<f64> position, video::SColor color, video::IVideoDriver* driver) {
+  this->position = core::vector2d<f64>(position);
+  this->velocity = core::vector2d<f64>(0, 0);
   this->color = color;
+  this->angle = 0;
+  this->driver = driver;
 };
 
 void Object::update(u32 deltaTime) {
-  this->position += ((f32) deltaTime) / 1000 * velocity;
+  this->position += ((f64) deltaTime) / 1000 * velocity;
 }
 
-void Object::setVelocity(core::vector2d<f32> velocity) {
+void Object::set_velocity(core::vector2d<f64> velocity) {
   this->velocity = velocity;
 }
 
-core::vector2d<f32> Object::getVelocity() {
+core::vector2d<f64> Object::get_velocity() {
   return this->velocity;
 }
 
-class Ship : public Object {
-  core::vector2d<s32> front_offset, back_left_offset, back_right_offset, back_mid_offset;
-  public:
-    Ship(core::vector2d<f32>, video::SColor color);
-    void draw(video::IVideoDriver* driver);
-};
-
-Ship::Ship(core::vector2d<f32> position, video::SColor color) : Object(position, color) {
-  front_offset = core::vector2d<s32>(0, 20);
-  back_left_offset = core::vector2d<s32>(-9, -20);
-  back_right_offset = core::vector2d<s32>(9, -20);
-  back_mid_offset = core::vector2d<s32>(-0, -15);
+void Object::rotate(f64 degrees) {
+  angle += degrees;
+  if(angle >= 360) {
+    angle -= 360;
+  }
 }
 
-void Ship::draw(video::IVideoDriver* driver) {
-  core::vector2d<s32> intPosition = core::vector2d<s32>((s32) (position.X + 0.5), (s32) (position.Y + 0.5));
-  driver->draw2DLine(intPosition + back_left_offset, intPosition + front_offset, color);
-  driver->draw2DLine(intPosition + back_right_offset, intPosition + front_offset, color);
-  driver->draw2DLine(intPosition + back_right_offset, intPosition + back_mid_offset, color);
-  driver->draw2DLine(intPosition + back_left_offset, intPosition + back_mid_offset, color);
+void Object::draw_and_wrap(core::vector2d<f64> start, core::vector2d<f64> end) {
+  if(false) {
+
+  }
+  else {
+    driver->draw2DLine(core::vector2d<s32>((int) (start.X + 0.5), (int) (start.Y + 0.5)), core::vector2d<s32>((int) (end.X + 0.5), (int) (end.Y + 0.5)), color);
+  }
+
+}
+
+class Ship : public Object {
+  core::vector2d<f64> front_offset, back_left_offset, back_right_offset, back_mid_offset;
+  public:
+    Ship(core::vector2d<f64>, video::SColor, video::IVideoDriver* );
+    void draw();
+    void rotate(f64);
 };
+
+Ship::Ship(core::vector2d<f64> position, video::SColor color, video::IVideoDriver* driver) : Object(position, color, driver) {
+  front_offset = core::vector2d<f64>(0, 20);
+  back_left_offset = core::vector2d<f64>(-9, -20);
+  back_right_offset = core::vector2d<f64>(9, -20);
+  back_mid_offset = core::vector2d<f64>(-0, -15);
+}
+
+void Ship::draw() {
+  draw_and_wrap(position + back_left_offset, position + front_offset);
+  draw_and_wrap(position + back_right_offset, position + front_offset);
+  draw_and_wrap(position + back_right_offset, position + back_mid_offset);
+  draw_and_wrap(position + back_left_offset, position + back_mid_offset);
+};
+
+void Ship::rotate(f64 angle) {
+  Object::rotate(angle);
+
+  core::vector2d<f64> zero_vector = core::vector2d<f64>(0, 0);
+  front_offset.rotateBy(angle, zero_vector);
+  back_left_offset.rotateBy(angle, zero_vector);
+  back_right_offset.rotateBy(angle, zero_vector);
+  back_mid_offset.rotateBy(angle, zero_vector);
+}
 
 core::list<Object*> objects;
 
 void drawLoop(IrrlichtDevice* device, video::IVideoDriver* driver) {
   video::SColor color = video::SColor(255, 255, 255, 255);
-  Ship ship = Ship(core::vector2d<f32>(400, 400), color);
-  ship.setVelocity(core::vector2d<f32>(10, 0));
+  Ship ship = Ship(core::vector2d<f64>(400, 400), color, driver);
   objects.push_front(&ship);
   u32 then = device->getTimer()->getTime();
   u32 now = then;
@@ -78,7 +110,7 @@ void drawLoop(IrrlichtDevice* device, video::IVideoDriver* driver) {
       driver->beginScene(true, true, video::SColor(0, 0, 0, 0));
       for(Object* o : objects) {
         o->update(deltaTime);
-        o->draw(driver);
+        o->draw();
       }
       driver->endScene();
     }
