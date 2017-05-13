@@ -9,6 +9,10 @@ class Ship : public Object {
     Ship(irr::core::vector2d<irr::f64>, irr::video::SColor, irr::video::IVideoDriver* );
     void draw();
     void rotate(irr::f64);
+    void update(irr::u32);
+    bool turn_left;
+    bool turn_right;
+    bool thrust;
 };
 
 #endif

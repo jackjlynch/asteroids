@@ -3,6 +3,7 @@
 #include <irrlicht/driverChoice.h>
 #include "Object.h"
 #include "Ship.h"
+#include "EventReceiver.h"
 
 using namespace irr;
 
@@ -11,10 +12,15 @@ using namespace irr;
 #endif
 
 
-
 core::list<Object*> objects;
 
-void drawLoop(IrrlichtDevice* device, video::IVideoDriver* driver) {
+void handle_input(Ship &ship, EventReceiver* receiver) {
+  ship.turn_left = receiver->is_key_down(KEY_KEY_A);
+  ship.turn_right = receiver->is_key_down(KEY_KEY_D);
+  ship.thrust = receiver->is_key_down(KEY_KEY_W);
+}
+
+void draw_loop(IrrlichtDevice* device, video::IVideoDriver* driver, EventReceiver* receiver) {
   video::SColor color = video::SColor(255, 255, 255, 255);
   Ship ship = Ship(core::vector2d<f64>(400, 400), color, driver);
   objects.push_front(&ship);
@@ -25,6 +31,7 @@ void drawLoop(IrrlichtDevice* device, video::IVideoDriver* driver) {
       now = device->getTimer()->getTime();
       u32 deltaTime = now - then;
       then = now;
+      handle_input(ship, receiver);
       driver->beginScene(true, true, video::SColor(0, 0, 0, 0));
       for(Object* o : objects) {
         o->update(deltaTime);
@@ -41,7 +48,8 @@ int main() {
     return 1;
   }
 
-  IrrlichtDevice *device = createDevice(driverType, core::dimension2d<u32>(800, 800));
+  EventReceiver receiver;
+  IrrlichtDevice *device = createDevice(driverType, core::dimension2d<u32>(800, 800), 16, false, false, false, &receiver);
 
   if(device==0) {
     return 1;
@@ -52,5 +60,5 @@ int main() {
 
   objects = core::list<Object*>();
 
-  drawLoop(device, driver);
+  draw_loop(device, driver, &receiver);
 }
