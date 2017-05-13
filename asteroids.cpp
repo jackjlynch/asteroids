@@ -29,6 +29,7 @@ int main() {
 
   EventReceiver receiver;
   IrrlichtDevice *device = createDevice(driverType, core::dimension2d<u32>(800, 800), 16, false, false, false, &receiver);
+  device->setResizable(false);
 
   if(device==0) {
     return 1;

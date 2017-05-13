@@ -8,6 +8,8 @@ Game::Game(video::IVideoDriver* driver, EventReceiver* receiver) :
   receiver(receiver),
   driver(driver) {
   objects.push_front(&ship);
+  Asteroid* asteroid = new Asteroid(core::vector2d<f64>(300, 200), 0, color, driver);
+  objects.push_front(asteroid);
 }
 
 void Game::handle_input() {

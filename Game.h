@@ -6,6 +6,7 @@
 #include "Ship.h"
 #include "Bullet.h"
 #include "EventReceiver.h"
+#include "Asteroid.h"
 
 class Game {
   irr::core::list<Object*> objects;
