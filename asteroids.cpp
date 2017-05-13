@@ -18,11 +18,12 @@ void handle_input(Ship &ship, EventReceiver* receiver) {
   ship.turn_left = receiver->is_key_down(KEY_KEY_A);
   ship.turn_right = receiver->is_key_down(KEY_KEY_D);
   ship.thrust = receiver->is_key_down(KEY_KEY_W);
+  ship.firing = receiver->is_key_down(KEY_SPACE);
 }
 
 void draw_loop(IrrlichtDevice* device, video::IVideoDriver* driver, EventReceiver* receiver) {
   video::SColor color = video::SColor(255, 255, 255, 255);
-  Ship ship = Ship(core::vector2d<f64>(400, 400), color, driver);
+  Ship ship = Ship(core::vector2d<f64>(400, 400), 180, color, driver);
   objects.push_front(&ship);
   u32 then = device->getTimer()->getTime();
   u32 now = then;
@@ -36,6 +37,9 @@ void draw_loop(IrrlichtDevice* device, video::IVideoDriver* driver, EventReceive
       for(Object* o : objects) {
         o->update(deltaTime);
         o->draw();
+      }
+      if(ship.check_for_bullet()) {
+        objects.push_front(ship.get_bullet());
       }
       driver->endScene();
     }

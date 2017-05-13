@@ -11,7 +11,7 @@ class Object {
     irr::video::IVideoDriver* driver;
   public:
     irr::core::vector2d<irr::f64> position;
-    Object(irr::core::vector2d<irr::f64>, irr::video::SColor, irr::video::IVideoDriver*);
+    Object(irr::core::vector2d<irr::f64>, irr::f64, irr::video::SColor, irr::video::IVideoDriver*);
     virtual void draw() { };
     virtual void update(irr::u32);
     void set_velocity(irr::core::vector2d<irr::f64>);

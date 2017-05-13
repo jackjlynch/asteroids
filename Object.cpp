@@ -2,11 +2,11 @@
 
 using namespace irr;
 
-Object::Object(core::vector2d<f64> position, video::SColor color, video::IVideoDriver* driver) {
+Object::Object(core::vector2d<f64> position, f64 degrees, video::SColor color, video::IVideoDriver* driver) {
   this->position = core::vector2d<f64>(position);
   this->velocity = core::vector2d<f64>(0, 0);
   this->color = color;
-  this->angle = 0;
+  this->angle = degrees;
   this->driver = driver;
 };
 
