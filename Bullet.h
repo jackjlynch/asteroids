@@ -5,6 +5,7 @@
 
 class Bullet : public Object {
   irr::core::vector2d<irr::f64> size_vector;
+  irr::s32 range;
   public:
     void draw();
     void update(irr::u32);

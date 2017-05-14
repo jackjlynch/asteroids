@@ -24,6 +24,7 @@ void Game::handle_input() {
   ship.turn_right = receiver->is_key_down(KEY_KEY_D);
   ship.thrust = receiver->is_key_down(KEY_KEY_W);
   ship.firing = receiver->is_key_down(KEY_SPACE);
+  ship.hyperspace = receiver->is_key_down(KEY_KEY_H);
 }
 
 void Game::update(u32 deltaTime) {

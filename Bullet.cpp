@@ -6,6 +6,7 @@ Bullet::Bullet(core::vector2d<f64> position, f64 degrees, video::SColor color, v
   size_vector = core::vector2d<f64>(0, 5);
   set_velocity(core::vector2d<f64>(0, 300).rotateBy(degrees));
   rotate(degrees);
+  range = 6000;
 }
 
 Bullet::Bullet() : Object(core::vector2d<f64>(0, 0), 0, video::SColor(0, 0, 0, 0), NULL) {
@@ -25,6 +26,10 @@ void Bullet::rotate(f64 degrees) {
 }
 
 void Bullet::update(u32 deltaTime) {
+  range -= deltaTime;
+  if(range <= 0) {
+    alive = false;
+  }
   Object::update(deltaTime);
 }
 

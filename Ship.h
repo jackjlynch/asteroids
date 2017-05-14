@@ -17,8 +17,11 @@ class Ship : public Object {
     bool turn_right;
     bool thrust;
     bool firing;
+    bool hyperspace;
     irr::u32 fire_cooldown;
     irr::u32 time_since_last_shot;
+    irr::u32 hyperspace_cooldown;
+    irr::u32 time_since_hyperspace;
     bool check_for_bullet();
     Bullet* get_bullet();
 };

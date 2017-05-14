@@ -1,4 +1,6 @@
+#include <cstdlib>
 #include "Ship.h"
+#include "Game.h"
 
 using namespace irr;
 
@@ -10,10 +12,13 @@ Ship::Ship(core::vector2d<f64> position, f64 degrees, video::SColor color, video
   rotate(degrees);
   turn_right = false;
   turn_left = false;
-  fire_cooldown = 500;
+  fire_cooldown = 250;
   time_since_last_shot = 0;
   has_bullet = false;
   radius = 18;
+  hyperspace = false;
+  hyperspace_cooldown = 500;
+  time_since_hyperspace = 0;
 }
 
 void Ship::draw() {
@@ -52,6 +57,12 @@ void Ship::update(u32 deltaTime) {
     bullet = new Bullet(position + front_offset, angle, color, driver);
     has_bullet = true;
     time_since_last_shot = 0;
+  }
+  time_since_hyperspace += deltaTime;
+  if(hyperspace && time_since_hyperspace > hyperspace_cooldown) {
+    position.X = rand() % X_SIZE;
+    position.Y = rand() % Y_SIZE;
+    time_since_hyperspace = 0;
   }
   Object::update(deltaTime);
 }
