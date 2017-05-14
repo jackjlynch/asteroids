@@ -11,6 +11,7 @@ class Bullet : public Object {
     void rotate(irr::f64);
     Bullet(irr::core::vector2d<irr::f64>, irr::f64, irr::video::SColor, irr::video::IVideoDriver*);
     Bullet();
+    bool collide(Object);
 };
 
 #endif

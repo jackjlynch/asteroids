@@ -13,7 +13,9 @@ Bullet::Bullet() : Object(core::vector2d<f64>(0, 0), 0, video::SColor(0, 0, 0, 0
 }
 
 void Bullet::draw() {
-  draw_and_wrap(position - size_vector, position + size_vector);
+  if(alive) {
+    draw_and_wrap(position - size_vector, position + size_vector);
+  }
 }
 
 void Bullet::rotate(f64 degrees) {
@@ -24,4 +26,8 @@ void Bullet::rotate(f64 degrees) {
 
 void Bullet::update(u32 deltaTime) {
   Object::update(deltaTime);
+}
+
+bool Bullet::collide(Object object) {
+  return (position + size_vector).getDistanceFrom(object.position) <= object.radius;
 }

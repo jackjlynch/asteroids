@@ -37,7 +37,8 @@ int main() {
 
   device->setWindowCaption(L"Asteroids");
   video::IVideoDriver* driver = device->getVideoDriver();
-  Game game = Game(driver, &receiver);
+  gui::IGUIFont* font = device->getGUIEnvironment()->getBuiltInFont();
+  Game game = Game(driver, &receiver, font);
 
   game_loop(device, driver, game);
 }

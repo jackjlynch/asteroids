@@ -14,9 +14,14 @@ class Game {
   EventReceiver* receiver;
   irr::video::IVideoDriver* driver;
   irr::video::SColor color;
+  irr::u32 points;
+  irr::u32 game_time;
+  irr::u32 time_since_last_asteroid;
+  irr::u32 num_asteroids;
+  irr::gui::IGUIFont* font;
   void handle_input();
   public:
     void update(irr::u32);
-    Game(irr::video::IVideoDriver*, EventReceiver*);
+    Game(irr::video::IVideoDriver*, EventReceiver*, irr::gui::IGUIFont*);
 };
 #endif

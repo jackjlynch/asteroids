@@ -13,13 +13,16 @@ Ship::Ship(core::vector2d<f64> position, f64 degrees, video::SColor color, video
   fire_cooldown = 500;
   time_since_last_shot = 0;
   has_bullet = false;
+  radius = 18;
 }
 
 void Ship::draw() {
-  draw_and_wrap(position + back_left_offset, position + front_offset);
-  draw_and_wrap(position + back_right_offset, position + front_offset);
-  draw_and_wrap(position + back_right_offset, position + back_mid_offset);
-  draw_and_wrap(position + back_left_offset, position + back_mid_offset);
+  if(alive) {
+    draw_and_wrap(position + back_left_offset, position + front_offset);
+    draw_and_wrap(position + back_right_offset, position + front_offset);
+    draw_and_wrap(position + back_right_offset, position + back_mid_offset);
+    draw_and_wrap(position + back_left_offset, position + back_mid_offset);
+  }
 };
 
 void Ship::rotate(f64 degrees) {
