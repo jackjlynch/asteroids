@@ -8,6 +8,9 @@
 #include "EventReceiver.h"
 #include "Asteroid.h"
 
+#define X_SIZE 800
+#define Y_SIZE 800
+
 class Game {
   irr::core::list<Object*> objects;
   Ship ship;
