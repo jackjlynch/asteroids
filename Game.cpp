@@ -14,6 +14,7 @@ Game::Game(video::IVideoDriver* driver, EventReceiver* receiver, gui::IGUIFont* 
   points(0),
   game_time(1),
   time_since_last_asteroid(10000000),
+  time_since_death(0),
   num_asteroids(0) {
   objects.push_front(&ship);
 }
@@ -26,6 +27,7 @@ void Game::handle_input() {
 }
 
 void Game::update(u32 deltaTime) {
+  if(ship.alive) {
     handle_input();
     game_time += deltaTime;
     time_since_last_asteroid += deltaTime;
@@ -42,6 +44,7 @@ void Game::update(u32 deltaTime) {
       core::list<Object*>::Iterator i = objects.begin();
       while(i != objects.end()) {
         if(!(*i)->alive) {
+          delete *i;
           i = objects.erase(i);
         }
         else {
@@ -88,4 +91,19 @@ void Game::update(u32 deltaTime) {
       objects.push_front(ship.get_bullet());
     }
     driver->endScene();
+  }
+  else {
+    time_since_death += deltaTime;
+    if(time_since_death > 3000 && (receiver->is_key_down(KEY_KEY_A) || receiver->is_key_down(KEY_KEY_D) || receiver->is_key_down(KEY_KEY_W) || receiver->is_key_down(KEY_SPACE))) {
+      core::list<Object*>::Iterator last = objects.getLast();
+      objects.erase(last);
+      objects.clear();
+      ship = Ship(core::vector2d<f64>(X_SIZE / 2, Y_SIZE / 2), 180, video::SColor(255, 255, 255, 255), driver);
+      objects.push_front(&ship);
+      game_time = 0;
+      time_since_last_asteroid = 10000000;
+      points = 0;
+      time_since_death = 0;
+    }
+  }
 }

@@ -22,6 +22,7 @@ class Game {
   irr::u32 time_since_last_asteroid;
   irr::u32 num_asteroids;
   irr::gui::IGUIFont* font;
+  irr::u32 time_since_death;
   void handle_input();
   public:
     void update(irr::u32);
