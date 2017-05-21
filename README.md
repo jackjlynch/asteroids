@@ -12,8 +12,7 @@ Scoring and Mechanics
 --------------------
 The current score is displayed in the top left corner of the screen. Points are awarded proportionately to asteroid size every time one is destroyed.
 
-Todo
+Potential additions
 ----------------
-* Wrap objects near screen edge
 * Add UFO enemies
 * more options
