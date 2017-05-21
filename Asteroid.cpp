@@ -7,7 +7,7 @@ using namespace irr;
 Asteroid::Asteroid(core::vector2d<f64> position, f64 degrees, video::SColor color, video::IVideoDriver* driver, f64 radius) :
   Object(position, degrees, color, driver) {
     this->radius = radius;
-    vertices = (5 + (std::rand() % 20));
+    vertices = (5 + ((float)radius / 64) * (std::rand() % 20));
     wrap = true;
   }
 
