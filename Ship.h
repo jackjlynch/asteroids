@@ -5,7 +5,7 @@
 #include "Bullet.h"
 
 class Ship : public Object {
-  irr::core::vector2d<irr::f64> front_offset, back_left_offset, back_right_offset, back_mid_offset;
+  irr::core::vector2d<irr::f64> front_offset, back_left_offset, back_right_offset, back_mid_offset, thrust_mid_offset, thrust_left_offset, thrust_right_offset;
   bool has_bullet;
   Bullet* bullet;
   public:

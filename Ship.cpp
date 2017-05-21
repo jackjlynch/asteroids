@@ -9,6 +9,9 @@ Ship::Ship(core::vector2d<f64> position, f64 degrees, video::SColor color, video
   back_left_offset = core::vector2d<f64>(-9, -20);
   back_right_offset = core::vector2d<f64>(9, -20);
   back_mid_offset = core::vector2d<f64>(-0, -15);
+  thrust_mid_offset = core::vector2d<f64>(0, -28);
+  thrust_left_offset = core::vector2d<f64>(-5, -17);
+  thrust_right_offset = core::vector2d<f64>(5, -17);
   rotate(degrees);
   turn_right = false;
   turn_left = false;
@@ -28,6 +31,10 @@ void Ship::draw() {
     draw_line(position + back_right_offset, position + front_offset);
     draw_line(position + back_right_offset, position + back_mid_offset);
     draw_line(position + back_left_offset, position + back_mid_offset);
+    if(thrust) {
+      draw_line(position + thrust_left_offset, position + thrust_mid_offset);
+      draw_line(position + thrust_right_offset, position + thrust_mid_offset);
+    }
     if(wrap) {
       if(position.Y + radius > Y_SIZE) {
         Ship temp = Ship(position - core::vector2d<f64>(0, Y_SIZE), angle, color, driver);
@@ -81,6 +88,9 @@ void Ship::rotate(f64 degrees) {
   back_left_offset.rotateBy(degrees, zero_vector);
   back_right_offset.rotateBy(degrees, zero_vector);
   back_mid_offset.rotateBy(degrees, zero_vector);
+  thrust_left_offset.rotateBy(degrees, zero_vector);
+  thrust_mid_offset.rotateBy(degrees, zero_vector);
+  thrust_right_offset.rotateBy(degrees, zero_vector);
 }
 
 void Ship::update(u32 deltaTime) {
