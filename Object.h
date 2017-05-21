@@ -7,7 +7,7 @@ class Object {
     irr::video::SColor color;
     irr::core::vector2d<irr::f64> velocity;
     irr::f64 angle;
-    void draw_and_wrap(irr::core::vector2d<irr::f64>, irr::core::vector2d<irr::f64>);
+    void draw_line(irr::core::vector2d<irr::f64>, irr::core::vector2d<irr::f64>);
     irr::video::IVideoDriver* driver;
   public:
     irr::core::vector2d<irr::f64> position;

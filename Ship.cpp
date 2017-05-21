@@ -15,18 +15,61 @@ Ship::Ship(core::vector2d<f64> position, f64 degrees, video::SColor color, video
   fire_cooldown = 250;
   time_since_last_shot = 0;
   has_bullet = false;
-  radius = 18;
+  radius = 15;
   hyperspace = false;
   hyperspace_cooldown = 500;
   time_since_hyperspace = 0;
+  wrap = true;
 }
 
 void Ship::draw() {
   if(alive) {
-    draw_and_wrap(position + back_left_offset, position + front_offset);
-    draw_and_wrap(position + back_right_offset, position + front_offset);
-    draw_and_wrap(position + back_right_offset, position + back_mid_offset);
-    draw_and_wrap(position + back_left_offset, position + back_mid_offset);
+    draw_line(position + back_left_offset, position + front_offset);
+    draw_line(position + back_right_offset, position + front_offset);
+    draw_line(position + back_right_offset, position + back_mid_offset);
+    draw_line(position + back_left_offset, position + back_mid_offset);
+    if(wrap) {
+      if(position.Y + radius > Y_SIZE) {
+        Ship temp = Ship(position - core::vector2d<f64>(0, Y_SIZE), angle, color, driver);
+        temp.wrap = false;
+        temp.draw();
+      }
+      if(position.Y < radius) {
+        Ship temp = Ship(position + core::vector2d<f64>(0, Y_SIZE), angle, color, driver);
+        temp.wrap = false;
+        temp.draw();
+      }
+      if(position.X < radius) {
+        Ship temp = Ship(position + core::vector2d<f64>(X_SIZE, 0), angle, color, driver);
+        temp.wrap = false;
+        temp.draw();
+      }
+      if(position.X + radius > X_SIZE) {
+        Ship temp = Ship(position - core::vector2d<f64>(X_SIZE, 0), angle, color, driver);
+        temp.wrap = false;
+        temp.draw();
+      }
+      if(position.X + radius > X_SIZE && position.Y + radius > Y_SIZE) {
+        Ship temp = Ship(position - core::vector2d<f64>(X_SIZE, Y_SIZE), angle, color, driver);
+        temp.wrap = false;
+        temp.draw();
+      }
+      if(position.X + radius > X_SIZE && position.Y < radius) {
+        Ship temp = Ship(position - core::vector2d<f64>(X_SIZE, -Y_SIZE), angle, color, driver);
+        temp.wrap = false;
+        temp.draw();
+      }
+      if(position.X < radius && position.Y + radius > Y_SIZE) {
+        Ship temp = Ship(position - core::vector2d<f64>(-X_SIZE, Y_SIZE), angle, color, driver);
+        temp.wrap = false;
+        temp.draw();
+      }
+      if(position.X < radius && position.Y < radius) {
+        Ship temp = Ship(position - core::vector2d<f64>(-X_SIZE, -Y_SIZE), angle, color, driver);
+        temp.wrap = false;
+        temp.draw();
+      }
+    }
   }
 };
 

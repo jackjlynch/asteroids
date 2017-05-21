@@ -24,6 +24,7 @@ class Ship : public Object {
     irr::u32 time_since_hyperspace;
     bool check_for_bullet();
     Bullet* get_bullet();
+    bool wrap;
 };
 
 #endif

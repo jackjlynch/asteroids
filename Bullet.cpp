@@ -15,7 +15,7 @@ Bullet::Bullet() : Object(core::vector2d<f64>(0, 0), 0, video::SColor(0, 0, 0, 0
 
 void Bullet::draw() {
   if(alive) {
-    draw_and_wrap(position - size_vector, position + size_vector);
+    draw_line(position - size_vector, position + size_vector);
   }
 }
 

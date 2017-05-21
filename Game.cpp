@@ -34,7 +34,7 @@ void Game::update(u32 deltaTime) {
     time_since_last_asteroid += deltaTime;
     if(time_since_last_asteroid * ((f64) game_time / 10000) > 100 * (5 + rand() % 10000)) {
       time_since_last_asteroid = 0;
-      Asteroid* asteroid = new Asteroid(core::vector2d<f64>(rand() % X_SIZE, rand() % Y_SIZE), 0, color, driver, 64);
+      Asteroid* asteroid = new Asteroid(core::vector2d<f64>(rand() % X_SIZE, rand() % Y_SIZE), rand() % 360, color, driver, 64);
       if(asteroid->collide(ship)) {
         asteroid->position.X -= 3 * asteroid->radius;
       }
@@ -42,6 +42,7 @@ void Game::update(u32 deltaTime) {
       objects.push_front(asteroid);
     }
     if(game_time / 10000 != (game_time - deltaTime) / 10000) {
+      //periodically delete unused objects
       core::list<Object*>::Iterator i = objects.begin();
       while(i != objects.end()) {
         if(!(*i)->alive) {
@@ -69,11 +70,11 @@ void Game::update(u32 deltaTime) {
               points += p->radius * 10;
               if(p->radius > 16) {
                 core::vector2d<f64> zero_vector = core::vector2d<f64>(0, 0);
-                Asteroid* child1 = new Asteroid(core::vector2d<f64>(p->position), 0, color, driver, p->radius / 2);
+                Asteroid* child1 = new Asteroid(core::vector2d<f64>(p->position), rand() % 360, color, driver, p->radius / 2);
                 core::vector2d<f64> velocity_1 = core::vector2d<f64>(p->get_velocity());
                 velocity_1.rotateBy(90);
                 child1->set_velocity(3 * velocity_1);
-                Asteroid* child2 = new Asteroid(core::vector2d<f64>(p->position), 0, color, driver, p->radius / 2);
+                Asteroid* child2 = new Asteroid(core::vector2d<f64>(p->position), rand() % 360, color, driver, p->radius / 2);
                 core::vector2d<f64> velocity_2 = core::vector2d<f64>(p->get_velocity());
                 velocity_2.rotateBy(-90);
                 child2->set_velocity(3 * velocity_2);

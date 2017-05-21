@@ -42,7 +42,7 @@ void Object::rotate(f64 degrees) {
   }
 }
 
-void Object::draw_and_wrap(core::vector2d<f64> start, core::vector2d<f64> end) {
+void Object::draw_line(core::vector2d<f64> start, core::vector2d<f64> end) {
   if(false) {
 
   }
